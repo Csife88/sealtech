@@ -24,12 +24,9 @@ public class ModifyBadPartQuantityAfterRework {
 		ArrayList<Integer> ID = selectID.getListID(PartNumber);
 		int remaining = 0;
 		int extract = Integer.parseInt(reWorkTxt.getText());
-		for(int i = 0; i<bpq.getListBadPartQuantity(PartNumber).size();i++) {
-			
-			
+		for(int i = 0; i<bpq.getListBadPartQuantity(PartNumber).size()-1;i++) { // -1 az éppen hozzáadott sort ne frissitse 
 			
 			if(bpq.getListBadPartQuantity(PartNumber).get(i)<= extract) {
-				System.out.println(bpq.getListBadPartQuantity(PartNumber).get(i)+"------------------------"+extract);
 			     remaining=0;
 			     extract=extract-bpq.getListBadPartQuantity(PartNumber).get(i);
 			}else {

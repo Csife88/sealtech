@@ -96,11 +96,12 @@ public class Selection extends JFrame {
 	public static String getNumber;
 	public static int heatedQuantity;
 	public static int goodPluszBad;
+	public static String dText;
 
 	
 	private int remaining;
 
-	public void fillSelectionTable(int goodPart, int badPart) { 
+	public void fillSelectionTable(int goodPart, int badPart, String getNumber,String dText) { 
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://database-1.c3byo1nvyfgl.eu-central-1.rds.amazonaws.com/pls",
 					"admin", "Szemes1!");
@@ -112,11 +113,11 @@ public class Selection extends JFrame {
 			java.sql.Date date = new java.sql.Date(millis); // aktuális dátum date objektumba
 
 			add.setInt(1, id);
-			add.setString(2, comboBox.getModel().getSelectedItem().toString());
+			add.setString(2,getNumber);
 			add.setDate(3, date);
 			add.setInt(4, goodPart );
 			add.setInt(5, badPart);
-			add.setString(6, deliveryText.getText());
+			add.setString(6, dText);
 
 			int row = add.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Küldés sikeres");
@@ -155,7 +156,7 @@ public class Selection extends JFrame {
 			try {
 				con = DriverManager.getConnection(
 						"jdbc:mysql://database-1.c3byo1nvyfgl.eu-central-1.rds.amazonaws.com/pls", "admin", "Szemes1!");
-				String Query = "Update pls.heattreatment set quantity='" + remaining + "'" + "where ID='" + id + "'";
+				String Query = "Update pls.heattreatment set quantity='" + remaining + "'" + "where ID='" + id + "'"+"AND Status='"+"Arrived"+"'";
 				Statement Add = con.createStatement();
 				Add.executeUpdate(Query);
 
@@ -459,6 +460,7 @@ public class Selection extends JFrame {
 				
 				goodPart = Integer.parseInt(goodPartText.getText());
 				badPart = Integer.parseInt(badPartText.getText());
+				dText = deliveryText.getText();
 
 				if ((qc.arrivedHeatQuntityCount(comboBox)) < goodPluszBad) {
 					JOptionPane.showMessageDialog(null, "Kevés a válogatnivaló mennyiség!!");
@@ -469,7 +471,7 @@ public class Selection extends JFrame {
 				} else {
 
 					if (SelectionId != null) {
-						fillSelectionTable(goodPart, badPart);
+						fillSelectionTable(goodPart, badPart, getNumber,dText);
 						usfs.UpdataSentQuantity(comboBox);
 						refressArrivedHeatTreatmentQuantity();
 						rst.getSelectionTable(table_2);
@@ -542,5 +544,12 @@ public class Selection extends JFrame {
 		return a;
 		
 	}
+	public static String getDText() {
+	
+		String a = dText;
+		
+		return a;
+	}
+	
 
 }

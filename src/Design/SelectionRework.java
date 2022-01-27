@@ -102,15 +102,17 @@ public class SelectionRework extends JDialog {
 						
 						//
 					 if(s.getHeatedQuantity()+ Integer.parseInt(reWorkTxt.getText()) >= s.getGoodPluszBad() ) {
-						   s.fillSelectionTable(s.goodPart, s.badPart);
+						   s.fillSelectionTable(s.goodPart, s.badPart,s.getNumber,s.dText);
 						   raqtz.refressToZero(GetPartNumber.GetPartNumber());
 						   modifyBad.modifyBadPartQuantity(GetPartNumber.GetPartNumber(), reWorkTxt);
 						   
+						   System.out.println(s.goodPart+"   "+s.badPart);
 						   
-						 //  rst.getSelectionTable(table_2);
+						 //  rst.getSelectionTable(table_2); // table 2 nincs itt megoldásra vár a frissités 
 						   dispose();
 					 
 					 }else {
+						 
 						 JOptionPane.showMessageDialog(null, "Nincs elegendõ darab");
 					 }
 						

@@ -17,7 +17,7 @@ public class RefressArrivedQuntityToZero {
 		try {
 			con = DriverManager.getConnection(
 					"jdbc:mysql://database-1.c3byo1nvyfgl.eu-central-1.rds.amazonaws.com/pls", "admin", "Szemes1!");
-			String Query = "Update pls.heattreatment set quantity='" + 0 + "'" + "where productNumber='" + name + "'";
+			String Query = "Update pls.heattreatment set quantity='" + 0 + "'" + "where productNumber='" + name + "'"+"AND Status='"+"Arrived"+"'";
 			Statement Add = con.createStatement();
 			Add.executeUpdate(Query);
 
