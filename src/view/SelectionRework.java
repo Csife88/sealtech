@@ -15,12 +15,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import controller.GetPartNumber;
-import controller.ModifyBadPartQuantityAfterRework;
-import controller.QantityCount;
-import controller.RefressArrivedQuntityToZero;
-import fill_tables.FillSelectionTable;
-import read_tables.ReadSelectionTable;
+import heat.treatment.RefressArrivedQuntityToZero;
+import selection.FillSelectionTable;
+import selection.ModifyBadPartQuantityAfterRework;
+import selection.ReadSelectionTable;
+import supplier.QantityCount;
 
 public class SelectionRework extends JDialog {
 
@@ -48,7 +47,7 @@ public class SelectionRework extends JDialog {
 		{
 			JLabel partNumberLabel = new JLabel("");
 			partNumberLabel.setBounds(30, 15, 130, 25);
-			partNumberLabel.setText(GetPartNumber.getPartNumber());
+			partNumberLabel.setText(Selection.getPartNumber);
 			partNumberLabel.setFont(new Font("Century", Font.BOLD, 14));
 			contentPanel.add(partNumberLabel);
 		}
@@ -90,10 +89,10 @@ public class SelectionRework extends JDialog {
 						//
 						if (Selection.getHeatedQuantity() + Integer.parseInt(reWorkTxt.getText()) >= Selection
 								.getGoodPluszBad()) {
-						new FillSelectionTable().fillSelectionTable(Selection.goodPart, Selection.badPart, Selection.getNumber,
+						new FillSelectionTable().fillSelectionTable(Selection.goodPart, Selection.badPart, Selection.getPartNumber,
 									Selection.dText);
-							refressArrivedQuntityToZero.refressToZero(GetPartNumber.getPartNumber());
-							modifyBad.modifyBadPartQuantity(GetPartNumber.getPartNumber(), reWorkTxt);
+							refressArrivedQuntityToZero.refressToZero(Selection.getPartNumber);
+							modifyBad.modifyBadPartQuantity(Selection.getPartNumber, reWorkTxt);
 
 							System.out.println(Selection.goodPart + "   " + Selection.badPart);
 
@@ -118,7 +117,7 @@ public class SelectionRework extends JDialog {
 						dispose();
 					}
 				});
-				cancelButton.setActionCommand("M�gse");
+				cancelButton.setActionCommand("Mégse");
 				buttonPane.add(cancelButton);
 			}
 		}

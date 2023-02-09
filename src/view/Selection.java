@@ -21,15 +21,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.QantityCount;
-import controller.RefressArrivedHeatTreatmentQuantity;
-import controller.RowCount;
-import controller.SelectProduct;
-import fill_tables.FillSelectionTable;
-import read_tables.ReadAfterHeatTreatment;
-import read_tables.ReadSelectionTable;
-import updata_tables.UpdataArrivedHeatTreatment;
-import updata_tables.UpdataStockForSelectionPart;
+import heat.treatment.ReadAfterHeatTreatment;
+import heat.treatment.RefressArrivedHeatTreatmentQuantity;
+import product.SelectProduct;
+import selection.FillSelectionTable;
+import selection.ReadSelectionTable;
+import stock.UpdataArrivedHeatTreatmentForStockTable;
+import stock.UpdataStockForSelectionPart;
+import supplier.QantityCount;
 
 public class Selection extends JFrame {
 
@@ -59,16 +58,16 @@ public class Selection extends JFrame {
 
 	public String SelectionId;
 	public String Quntity;
+	
 	public static int goodPart;
 	public static int badPart;
-	public static String getNumber;
+	public static String getPartNumber;
 	public static int heatedQuantity;
 	public static int goodPluszBad;
 	public static String dText;
 
-	RowCount rowCount = new RowCount();
 	UpdataStockForSelectionPart updataStockForSelectionPart = new UpdataStockForSelectionPart();
-	UpdataArrivedHeatTreatment updataArrivedHeatTreatment = new UpdataArrivedHeatTreatment();
+	UpdataArrivedHeatTreatmentForStockTable updataArrivedHeatTreatmentForStockTable = new UpdataArrivedHeatTreatmentForStockTable();
 	SelectProduct selectProduct = new SelectProduct();
 	ReadSelectionTable readSelectionTable = new ReadSelectionTable();
 	QantityCount qantityCount = new QantityCount();
@@ -170,7 +169,7 @@ public class Selection extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				goodPluszBad = Integer.parseInt(goodPartText.getText()) + Integer.parseInt(badPartText.getText());
-				getNumber = comboBox.getModel().getSelectedItem().toString();
+				getPartNumber = comboBox.getModel().getSelectedItem().toString();
 				heatedQuantity = qantityCount.arrivedHeatQuntityCount(comboBox);
 
 				goodPart = Integer.parseInt(goodPartText.getText());
@@ -180,17 +179,16 @@ public class Selection extends JFrame {
 				if ((qantityCount.arrivedHeatQuntityCount(comboBox)) < goodPluszBad) {
 					JOptionPane.showMessageDialog(null, "Kevés a válogatnivaló mennyiség!!");
 					new SelectionReworkPopUpQuestion().setVisible(true);
-					// System.out.println(qc.arrivedHeatQuntityCount(comboBox));
 
 				} else {
 
 					if (SelectionId != null) {
-					new FillSelectionTable().fillSelectionTable(goodPart, badPart, getNumber, dText);
+					new FillSelectionTable().fillSelectionTable(goodPart, badPart, getPartNumber, dText);
 						updataStockForSelectionPart.UpdataSentQuantity(comboBox);
 						RefressArrivedHeatTreatmentQuantity.refressArrivedHeatTreatmentQuantity();
 						readSelectionTable.getSelectionTable(tableSelectionParts);
 						readAfterHeatTreatment.readAfterHeatTreatment(tableHeated);
-						updataArrivedHeatTreatment.UpdataArrived(comboBox);
+						updataArrivedHeatTreatmentForStockTable.UpdataArrived(comboBox);
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Hoppá valami nem jó!!");
@@ -222,46 +220,28 @@ public class Selection extends JFrame {
 
 	}
 
-	public static String getNumb() {
-
-		String a = getNumber;
-
-		return a;
-	}
-
 	public static int getHeatedQuantity() {
-
 		int a = heatedQuantity;
-
 		return a;
 	}
 
 	public static int getGoodPluszBad() {
-
 		int a = goodPluszBad;
-
 		return a;
 	}
 
 	public static int getGoodPart() {
-
 		int a = goodPart;
-
 		return a;
 	}
 
 	public static int getBadPart() {
-
 		int a = badPart;
-
 		return a;
-
 	}
 
 	public static String getDText() {
-
 		String a = dText;
-
 		return a;
 	}
 

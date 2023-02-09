@@ -23,16 +23,20 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.CalculateSelectionQuantityMinuszDeliveredQuantity;
-import controller.NextWeek;
-import controller.PreviousWeek;
-import controller.QantityCount;
-import controller.SelectProduct;
-import fill_tables.FillDeliveryNoteTable;
-import read_tables.ReadDeliveryNoteTable;
-import read_tables.ReadSelectionTable;
-import updata_tables.UpdataSelectionTable;
-import updata_tables.UpdataStockForSelectionPart;
+import delivery.FillDeliveryTable;
+import delivery.ReadDeliveryNoteTable;
+import product.SelectProduct;
+import selection.ReadSelectionTable;
+import selection.UpdataSelectionTable;
+import stock.UpdataStockForSelectionPart;
+import supplier.CalculateSelectionQuantityMinuszDeliveredQuantity;
+import supplier.NextWeek;
+import supplier.PreviousWeek;
+import supplier.QantityCount;
+import javax.swing.JScrollBar;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.Point;
+import java.awt.Component;
 
 public class Delivery extends JFrame {
 
@@ -42,6 +46,7 @@ public class Delivery extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JComboBox<String> partNumberBox = new JComboBox<>();
+	private final JComboBox<String> yearCombo = new JComboBox();
 	private final JLabel lblDarabszm = new JLabel("Darabszám");
 	private JTextField dbText;
 	private JTextField dátumTxt;
@@ -58,7 +63,7 @@ public class Delivery extends JFrame {
 	private final JLabel lblHt_1 = new JLabel("Hét");
 	private final JTextField weekChangeTxt = new JTextField();
 	private final JLabel prevLbl = new JLabel("<");
-	private final JLabel nextLbl = new JLabel(">");
+	private final JLabel nextLbl =new JLabel(">");
 	private final JTable tableOnStock = new JTable();
 	private final JLabel lblszallit = new JLabel("Kiszállítás");
 	private final JLabel rendelkez = new JLabel("Rendelkezésre áll");
@@ -66,7 +71,7 @@ public class Delivery extends JFrame {
 	private final JScrollPane scrollPane_1 = new JScrollPane();
 
 	SelectProduct selectProduct = new SelectProduct();
-	FillDeliveryNoteTable fillDeliveryNoteTable = new FillDeliveryNoteTable();
+	FillDeliveryTable fillDeliveryTable = new FillDeliveryTable();
 	ReadDeliveryNoteTable readDeliveryNoteTable = new ReadDeliveryNoteTable();
 	PreviousWeek pw = new PreviousWeek();
 	NextWeek nw = new NextWeek();
@@ -93,7 +98,7 @@ public class Delivery extends JFrame {
 		new Menu(panel, this);
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(154, 464, 114, 29);
+		lblNewLabel.setBounds(210, 464, 114, 29);
 		lblNewLabel.setFont(new Font("Century", Font.BOLD, 17));
 		lblNewLabel.setForeground(Color.DARK_GRAY);
 
@@ -101,13 +106,13 @@ public class Delivery extends JFrame {
 
 		partNumberBox.setForeground(Color.DARK_GRAY);
 		partNumberBox.setFont(new Font("Century", Font.BOLD, 17));
-		partNumberBox.setBounds(263, 463, 170, 30);
+		partNumberBox.setBounds(320, 464, 170, 30);
 		panel.add(partNumberBox);
 
 		lblDarabszm.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDarabszm.setForeground(Color.DARK_GRAY);
 		lblDarabszm.setFont(new Font("Century", Font.BOLD, 17));
-		lblDarabszm.setBounds(443, 464, 114, 29);
+		lblDarabszm.setBounds(490, 464, 114, 29);
 
 		panel.add(lblDarabszm);
 
@@ -115,14 +120,21 @@ public class Delivery extends JFrame {
 		dbText.setHorizontalAlignment(SwingConstants.CENTER);
 		dbText.setFont(new Font("Tahoma", Font.BOLD, 14));
 		dbText.setColumns(10);
-		dbText.setBounds(560, 463, 120, 30);
+		dbText.setBounds(610, 464, 120, 30);
 		panel.add(dbText);
+		
+		yearCombo.setEditable(true);
+		yearCombo.setFont(new Font("Tahoma", Font.BOLD, 14));
+		yearCombo.setModel(new DefaultComboBoxModel(new String[] {"2022", "2023"}));
+		yearCombo.setSelectedIndex(1);
+		yearCombo.setBounds(5, 464, 98, 30);
+		panel.add(yearCombo);
 
 		JLabel lblDtum = new JLabel("Dátum");
 		lblDtum.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDtum.setForeground(Color.DARK_GRAY);
 		lblDtum.setFont(new Font("Century", Font.BOLD, 17));
-		lblDtum.setBounds(666, 464, 114, 29);
+		lblDtum.setBounds(710, 464, 114, 29);
 		panel.add(lblDtum);
 
 		dátumTxt = new JTextField();
@@ -130,7 +142,7 @@ public class Delivery extends JFrame {
 		dátumTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		dátumTxt.setToolTipText("1999-12-31");
 		dátumTxt.setColumns(10);
-		dátumTxt.setBounds(761, 463, 130, 30);
+		dátumTxt.setBounds(815, 464, 120, 30);
 		dátumTxt.setText(formatter.format(date));
 		panel.add(dátumTxt);
 
@@ -145,9 +157,9 @@ public class Delivery extends JFrame {
 					JOptionPane.showMessageDialog(null, "Nincs elegendő mennyiség");
 				} else {
 
-					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt);
-					fillDeliveryNoteTable.deliveryAdd(weekChangeTxt, partNumberBox, dátumTxt, dbText, deliveryTxt);
-					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt);
+					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt,yearCombo);
+					fillDeliveryTable.deliveryAdd(weekChangeTxt, partNumberBox, dátumTxt, dbText, deliveryTxt,yearCombo);
+					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt,yearCombo);
 					updataSelectionTable.UpdateColumnToArray(calculateSelectionQuantityMinuszDeliveredQuantity
 							.ProdQuntityMinuszSendHeatTreatment(partNumberBox,dbText), partNumberBox);
 					readSelectionTable.getSelectionTable(tableOnStock);
@@ -159,7 +171,7 @@ public class Delivery extends JFrame {
 		});
 		btnNewButton.setForeground(Color.DARK_GRAY);
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnNewButton.setBounds(1228, 464, 100, 30);
+		btnNewButton.setBounds(1240, 464, 100, 30);
 		panel.add(btnNewButton);
 		selectProduct.selectProduct(partNumberBox);
 		scrollPane.setBounds(2, 550, 1350, 180);
@@ -171,32 +183,32 @@ public class Delivery extends JFrame {
 		tabledWeeklyDelirvery.setFont(new Font("Tahoma", Font.BOLD, 14));
 		tabledWeeklyDelirvery.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Cikkszám", "Dátum", "Darabszám", "Rendelés száma" }));
-		readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt);
+		readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt,yearCombo);
 
 		lblRendelsSzm.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRendelsSzm.setForeground(Color.DARK_GRAY);
 		lblRendelsSzm.setFont(new Font("Century", Font.BOLD, 17));
-		lblRendelsSzm.setBounds(901, 464, 135, 29);
+		lblRendelsSzm.setBounds(940, 464, 135, 29);
 
 		panel.add(lblRendelsSzm);
 		deliveryTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		deliveryTxt.setFont(new Font("Tahoma", Font.BOLD, 14));
 		deliveryTxt.setColumns(10);
-		deliveryTxt.setBounds(1043, 463, 150, 30);
+		deliveryTxt.setBounds(1080, 464, 150, 30);
 
 		panel.add(deliveryTxt);
 
 		lblHt_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHt_1.setForeground(Color.DARK_GRAY);
 		lblHt_1.setFont(new Font("Century", Font.BOLD, 17));
-		lblHt_1.setBounds(105, 464, 39, 29);
+		lblHt_1.setBounds(110, 464, 39, 29);
 
 		panel.add(lblHt_1);
 		weekChangeTxt.setText(week2);
 		weekChangeTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		weekChangeTxt.setFont(new Font("Tahoma", Font.BOLD, 14));
 		weekChangeTxt.setColumns(10);
-		weekChangeTxt.setBounds(35, 464, 30, 30);
+		weekChangeTxt.setBounds(165, 464, 30, 30);
 
 		panel.add(weekChangeTxt);
 		prevLbl.addMouseListener(new MouseAdapter() {
@@ -207,7 +219,7 @@ public class Delivery extends JFrame {
 
 				if (condition > 1) {
 					pw.prewWeek(weekChangeTxt);
-					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt);
+					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt,yearCombo);
 				}
 
 			}
@@ -215,7 +227,7 @@ public class Delivery extends JFrame {
 		prevLbl.setHorizontalAlignment(SwingConstants.LEFT);
 		prevLbl.setForeground(Color.DARK_GRAY);
 		prevLbl.setFont(new Font("Century", Font.BOLD, 23));
-		prevLbl.setBounds(14, 465, 21, 29);
+		prevLbl.setBounds(145, 465, 21, 29);
 
 		panel.add(prevLbl);
 		nextLbl.addMouseListener(new MouseAdapter() {
@@ -224,14 +236,14 @@ public class Delivery extends JFrame {
 				int condition = Integer.parseInt(weekChangeTxt.getText());
 				if (condition < 52) {
 					nw.nextWeek(weekChangeTxt);
-					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt);
+					readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt,yearCombo);
 				}
 			}
 		});
 		nextLbl.setHorizontalAlignment(SwingConstants.LEFT);
 		nextLbl.setForeground(Color.DARK_GRAY);
 		nextLbl.setFont(new Font("Century", Font.BOLD, 23));
-		nextLbl.setBounds(69, 465, 21, 29);
+		nextLbl.setBounds(200, 465, 21, 29);
 
 		panel.add(nextLbl);
 		scrollPane_1.setBounds(2, 190, 1350, 180);
@@ -243,7 +255,7 @@ public class Delivery extends JFrame {
 				new String[] { "Cikkszám", "Dátum", "Jó termék", "Rossz termék", "Hőkezelés száma" }));
 
 		readSelectionTable.getSelectionTable(tableOnStock);
-		readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt);
+		readDeliveryNoteTable.getDatabase(tabledWeeklyDelirvery, weekChangeTxt,yearCombo);
 
 		lblszallit.setHorizontalAlignment(SwingConstants.CENTER);
 		lblszallit.setForeground(Color.DARK_GRAY);
@@ -257,6 +269,11 @@ public class Delivery extends JFrame {
 		rendelkez.setBounds(535, 111, 228, 43);
 
 		panel.add(rendelkez);
+		
+	
+	
 
+		
+		
 	}
 }

@@ -27,9 +27,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
-import controller.DatabaseCon;
+import supplier.DatabaseCon;
 
-public class LoginPage extends JFrame {
+public class LoginPage extends JFrame{
 
 	/**
 	 * 
@@ -52,7 +52,6 @@ public class LoginPage extends JFrame {
 	Connection con = null;
 	Statement St = null;
 	ResultSet Rs = null;
-	
 	
 
 	/**
@@ -78,7 +77,6 @@ public class LoginPage extends JFrame {
 	 */
 	public LoginPage() throws IOException {
 		
-		DatabaseCon db = new DatabaseCon();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 400);
@@ -137,8 +135,8 @@ public class LoginPage extends JFrame {
 				try {
 
 					try {
-						con = DriverManager.getConnection(DatabaseCon.getUrl(), DatabaseCon.getName(),
-								DatabaseCon.getPassword());
+					con = DriverManager.getConnection(DatabaseCon.getUrl(), DatabaseCon.getName(),
+							DatabaseCon.getPassword());
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -160,6 +158,5 @@ public class LoginPage extends JFrame {
 		loginBtn.setForeground(new Color(75, 0, 130));
 		panel.add(loginBtn);
 		loginBtn.setText("Bejelentkezés");
-		System.out.println("hello");
 	}
 }

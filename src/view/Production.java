@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,22 +22,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import controller.DeliveryNumberForProductionAdd;
-import controller.RowCount;
-import controller.SelectProductForProductionAdd;
-import controller.SelectWorkerForProductionAdd;
-import fill_tables.FillCopyTable;
-import fill_tables.FillProductionTable;
-import fill_tables.WorkerAdd;
-import read_tables.FilterProductionTable;
-import read_tables.ReadPorductionDatabase;
-import updata_tables.UpdataMade;
-import updata_tables.UpdateRawMetrialTable;
+import product.SelectProductForProductionAdd;
+import production.FillCopyProductionTable;
+import production.FillProductionTable;
+import production.FilterProductionTable;
+import production.ReadPorductionDatabase;
+import rawmetarial.DeliveryNumberForProductionAdd;
+import rawmetarial.UpdateRawMetrialTable;
+import stock.UpdataMade;
+import worker.SelectWorkerForProductionAdd;
+import worker.WorkerAdd;
 
 public class Production extends JFrame {
 
@@ -77,8 +74,7 @@ public class Production extends JFrame {
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	Date date = new Date(System.currentTimeMillis());
 
-    RowCount rowCount = new RowCount();
-	FillCopyTable fillCopyTable = new FillCopyTable();
+	FillCopyProductionTable fillCopyProductionTable = new FillCopyProductionTable();
 	ReadPorductionDatabase readPorductionDatabase = new ReadPorductionDatabase();
 	FillProductionTable fillProductTable = new FillProductionTable();
 	DeliveryNumberForProductionAdd deliveryNumberForProductionAdd = new DeliveryNumberForProductionAdd();
@@ -169,7 +165,7 @@ public class Production extends JFrame {
 					updateRawMetrialTable.UpdateOnStockQuantity(deliveryCombo, productComboBox, dbText);
 					if (updateRawMetrialTable.isEnoughtMetarial) {
 						fillProductTable.productionAdd(productComboBox, workerCombo, deliveryCombo, dátumTxt, dbText);
-						fillCopyTable.CopyproductionAdd(productComboBox, workerCombo, deliveryCombo, dátumTxt, dbText);
+						fillCopyProductionTable.CopyproductionAdd(productComboBox, workerCombo, deliveryCombo, dátumTxt, dbText);
 						readPorductionDatabase.getDatabase(table, "production");
 						updataMade.UpdataDataMade(productComboBox);
 					} else {
@@ -229,7 +225,6 @@ public class Production extends JFrame {
 
 		deliveryNumberForProductionAdd.getDeliverNumber(deliveryCombo);
 		readPorductionDatabase.getDatabase(table, "production");
-		rowCount.getCount("production");
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {

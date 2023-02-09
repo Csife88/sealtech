@@ -22,12 +22,12 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.ProductStatusSearch;
-import controller.SelectProduct;
-import fill_tables.FillProductTable;
-import fill_tables.FillRawMetarialTable;
-import fill_tables.FillStockTableForNewProduct;
-import read_tables.ReadRawMetarialTable;
+import product.FillProductTable;
+import product.SelectProduct;
+import rawmetarial.FillRawMetarialTable;
+import rawmetarial.ReadRawMetarialTable;
+import stock.FillStockTableForNewProduct;
+import stock.ProductStatusSearch;
 
 public class Stock extends JFrame {
 

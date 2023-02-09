@@ -22,20 +22,20 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.BeforeHeatTreatmentQuntityForStockTable;
-import controller.CalculateProductQuntityMinuszSendHeatTreatment;
-import controller.SelectProduct;
-import fill_tables.FillHeatTreatmentTable;
-import read_tables.ReadAfterHeatTreatment;
-import read_tables.ReadSendHeatTreatment;
-import updata_tables.UpdataArrivedHeatTreatment;
-import updata_tables.UpdataDateArriveHeatTreatment;
-import updata_tables.UpdataDateArriveHeatTreatmentCopy;
-import updata_tables.UpdataHeatTreatmentNumberOnHeatTreatmentTable;
-import updata_tables.UpdataMade;
-import updata_tables.UpdataSentHeatTreatment;
-import updata_tables.UpdateCopyTable;
-import updata_tables.UpdateStatusForArrivedOnHeatTreatmentTable;
+import heat.treatment.FillHeatTreatmentTable;
+import heat.treatment.ReadAfterHeatTreatment;
+import heat.treatment.ReadSendHeatTreatment;
+import heat.treatment.UpdataDateArriveHeatTreatment;
+import heat.treatment.UpdataDateArriveHeatTreatmentCopy;
+import heat.treatment.UpdataHeatTreatmentNumberOnHeatTreatmentTable;
+import heat.treatment.UpdateStatusForArrivedOnHeatTreatmentTable;
+import product.SelectProduct;
+import production.UpdateCopyTable;
+import stock.BeforeHeatTreatmentQuntityForStockTable;
+import stock.UpdataArrivedHeatTreatmentForStockTable;
+import stock.UpdataMade;
+import stock.UpdataSentHeatTreatmentForStockTable;
+import supplier.CalculateProductQuntityMinuszSendHeatTreatment;
 
 public class HeatTreatment extends JFrame {
 
@@ -52,8 +52,8 @@ public class HeatTreatment extends JFrame {
 
 	CalculateProductQuntityMinuszSendHeatTreatment calculateProductQuntityMinuszSendHeatTreatment = new CalculateProductQuntityMinuszSendHeatTreatment();
 	UpdateCopyTable updateCopyTable = new UpdateCopyTable();
-	UpdataSentHeatTreatment updataSentHeatTreatment = new UpdataSentHeatTreatment();
-	UpdataArrivedHeatTreatment updataArrivedHeatTreatment = new UpdataArrivedHeatTreatment();
+	UpdataSentHeatTreatmentForStockTable updataSentHeatTreatmentForStockTable = new UpdataSentHeatTreatmentForStockTable();
+	UpdataArrivedHeatTreatmentForStockTable updataArrivedHeatTreatmentForStockTable = new UpdataArrivedHeatTreatmentForStockTable();
 	ReadAfterHeatTreatment readAfterHeatTreatment = new ReadAfterHeatTreatment();
 	SelectProduct selectProduct = new SelectProduct();
 	BeforeHeatTreatmentQuntityForStockTable beforeHeatTreatmentQuntityForStockTable = new BeforeHeatTreatmentQuntityForStockTable();
@@ -218,7 +218,7 @@ public class HeatTreatment extends JFrame {
 					updataMade.UpdataDataMade(comboBox_1);
 					beforeHeatTreatmentQuntityForStockTable.beferoHeatTreatment(tableReadyToHeattreatment);
 				}
-				updataSentHeatTreatment.UpdataSentQuantity(comboBox_1);
+				updataSentHeatTreatmentForStockTable.UpdataSentQuantity(comboBox_1);
 				readSendHeatTreatment.getSendHeatTreatment(inHeatTreatment);
 			}
 		});
@@ -243,8 +243,8 @@ public class HeatTreatment extends JFrame {
 					updataHeatTreatmentNumberOnHeatTreatmentTable.heatNumber(heatId, HeatNumberText);
 					readSendHeatTreatment.getSendHeatTreatment(inHeatTreatment);
 					readAfterHeatTreatment.readAfterHeatTreatment(tableAfterHeattreatment);
-					updataArrivedHeatTreatment.UpdataArrived(comboBox_1);
-					updataSentHeatTreatment.UpdataSentQuantity(comboBox_1);
+					updataArrivedHeatTreatmentForStockTable.UpdataArrived(comboBox_1);
+					updataSentHeatTreatmentForStockTable.UpdataSentQuantity(comboBox_1);
 				} else {
 					JOptionPane.showMessageDialog(null, "Hoppá valami nem jó!");
 				}
